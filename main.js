@@ -27,18 +27,21 @@ document.addEventListener('DOMContentLoaded', function(){
         deckCards.forEach(card => {
             // console.log(card)
 
+            let color = 'black'
             switch (card.Suit) {
                 case "spades":
                     contnetData = "&#9824;";
                     break;
                 case "diamonds":
-                    contnetData = "&#9827;";
+                    contnetData = "&#9830;";
+                    color = 'red';
                     break;
                 case "clubs":
-                    contnetData = "&#9829;";
+                    contnetData = "&#9827;";
                     break;
                 case "hearts":
-                    contnetData = "&#9830;";
+                    contnetData = "&#9829;";
+                    color = 'red';
                     break;
             }
 
@@ -49,6 +52,7 @@ document.addEventListener('DOMContentLoaded', function(){
             cardElement.className = "card";
             value.className = "value";
             symbol.className = "card-symbol";
+            symbol.classList.add(color);
 
             value.innerHTML = card.Value;
             symbol.innerHTML = contnetData;
