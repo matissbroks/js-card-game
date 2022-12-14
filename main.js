@@ -4,10 +4,142 @@ document.addEventListener('DOMContentLoaded', function(){
     let playerField = document.getElementById('playerField')
     let userField = document.getElementById('userField')
 
+    let userCardContainer = document.getElementById('userCardContainer')
+    let oponentCardContainer = document.getElementById('oponentCardContainer')
+
     let suits = ["spades", "diamonds", "clubs", "hearts"];
     let values = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"];
 
+    let userCards = new Array();
+    let oponentCards = new Array();
+
     startGame()
+
+
+
+    function startGame() {
+        let freshDeck = shuffle(createDeck())
+
+        // dealCards(freshDeck);        // Deal all cards
+        dealCards(freshDeck.slice(0, 10));  // Deal only first 10 cards
+
+        drawCards()
+
+        let moveCount = 0;
+
+        hitButton.addEventListener('click', () => {
+            moveCount++;
+            hitCards(userCards, oponentCards)
+
+            if(checkLoseWin()) {
+                return;
+            }
+
+            if(moveCount == 5) {
+                shuffle(userCards)
+                shuffle(oponentCards)
+                moveCount = 0
+            }
+
+            drawCards()
+        })
+    }
+
+    function drawCards() {
+        userCards.forEach((card, index) => {
+            userCardContainer.appendChild(card.CardHTML)
+        })
+
+        oponentCards.forEach((card, index) => {
+            oponentCardContainer.appendChild(card.CardHTML)
+        })
+    }
+
+    function hitCards(userCards, oponentCards) {
+        let userCardData = userCards[0]
+        let oponentCardData = oponentCards[0]
+        
+        if(playerField.innerHTML != '') {
+            playerField.innerHTML = ''
+        }
+
+        if(userField.innerHTML != '') {
+            userField.innerHTML = ''
+        }
+
+
+        let userCardElement = document.createElement("div");
+        userCardElement.classList.add("card");
+        userCardElement.innerHTML = userCards[0].CardHTML.innerHTML;
+        playerField.appendChild(userCardElement);
+        userCardValue1 = gerCardValue(userCardData.Value)
+
+        let playerCardElement = document.createElement("div");
+        playerCardElement.classList.add("card");
+        playerCardElement.innerHTML = oponentCards[0].CardHTML.innerHTML;
+        userField.appendChild(playerCardElement);
+        oponentCardValue = gerCardValue(oponentCardData.Value)
+
+        if(userCardValue1 > oponentCardValue) {
+            let winCard = oponentCards.shift();
+            let asLastCard = userCards.shift()
+
+            userCards.push(winCard);
+            userCards.push(asLastCard);
+        }
+        else if(userCardValue1 < oponentCardValue) {
+            let winCard = userCards.shift();
+            let asLastCard = oponentCards.shift()
+
+            oponentCards.push(winCard);
+            oponentCards.push(asLastCard);
+        } else {
+            let passCardOne = userCards.shift();
+            let passCardTwo = oponentCards.shift()
+
+            userCards.push(passCardOne);
+            oponentCards.push(passCardTwo);
+        }
+
+        return [userCards, oponentCards]
+    }
+
+    function gerCardValue(cardValue) {
+        switch (cardValue) {
+            case "A":
+                cardValue = 11;
+                break;
+            case "J":
+                cardValue = 12;
+                break;
+            case "Q":
+                cardValue = 13;
+                break;
+            case "K":
+                cardValue = 14;
+                break;
+        }
+
+        return cardValue
+    }
+
+    function shuffle(array) {
+        let currentIndex = array.length,  randomIndex;
+
+        // // While there remain elements to shuffle.
+        while (currentIndex != 0) {
+      
+          // Pick a remaining element.
+          randomIndex = Math.floor(Math.random() * currentIndex);
+          currentIndex--;
+      
+          // And swap it with the current element.
+          [array[currentIndex], array[randomIndex]] = [
+            array[randomIndex], array[currentIndex]];
+        }
+      
+        return array;
+    }
 
     function createDeck() {
         let deck = new Array();
@@ -22,17 +154,8 @@ document.addEventListener('DOMContentLoaded', function(){
         return deck;
     }
 
-    function startGame() {
-        let userCardContainer = document.getElementById('userCardContainer')
-        let playerCardContainer = document.getElementById('playerCardContainer')
-
-        let userCards = new Array();
-        let oponentCards = new Array();
-
-        let freshDeck = createDeck()
-        let deckCards = shuffle(freshDeck)
-
-        deckCards.forEach((card, index) => {
+    function dealCards(cardDeck) {
+        cardDeck.forEach((card, index) => {
             let currentCardNumber = index + 1
 
             let color = 'black'
@@ -70,112 +193,28 @@ document.addEventListener('DOMContentLoaded', function(){
 
             if(currentCardNumber % 2 == 0) {
                 userCards.push(card)
-                userCardContainer.appendChild(cardElement);
             } else {
                 oponentCards.push(card)
-                playerCardContainer.appendChild(cardElement);
             }
         });
-
-        hitButton.addEventListener('click', () => {
-            let cardsSwaped = hitCards(userCards, oponentCards)
-
-            userCards = cardsSwaped[0]
-            oponentCards = cardsSwaped[1]
-        })
-    
     }
 
-    function shuffle(array) {
-        let currentIndex = array.length,  randomIndex;
-
-        // // While there remain elements to shuffle.
-        while (currentIndex != 0) {
-      
-          // Pick a remaining element.
-          randomIndex = Math.floor(Math.random() * currentIndex);
-          currentIndex--;
-      
-          // And swap it with the current element.
-          [array[currentIndex], array[randomIndex]] = [
-            array[randomIndex], array[currentIndex]];
+    function checkLoseWin() {
+        let gameEnded = false;
+        if(userCards.length == 0) {
+            msg = "You Loose!"
+            gameEnded = true;
         }
-      
-        return array;
-      }
+        else if(oponentCards.length == 0) {
+            msg = "You WIN!!!"
+            gameEnded = true;
+        }
 
-    function hitCards(userCards, oponentCards) {
-        let userCardData = userCards[0]
-        let oponentCardData = oponentCards[0]
+        if(gameEnded) {
+            alert(msg)
+            hitButton.removeEventListener('click')
+        }
         
-        console.log(playerField.innerHTML)
-        console.log(userField.innerHTML)
-        if(playerField.innerHTML != '') {
-            playerField.innerHTML = ''
-        }
-
-        if(userField.innerHTML != '') {
-            userField.innerHTML = ''
-        }
-
-
-        let userCardElement = document.createElement("div");
-        userCardElement.classList.add("card");
-        userCardElement.innerHTML = userCards[0].CardHTML.innerHTML;
-        playerField.appendChild(userCardElement);
-        userCardValue1 = gerCardValue(userCardData.Value)
-
-        let playerCardElement = document.createElement("div");
-        playerCardElement.classList.add("card");
-        playerCardElement.innerHTML = oponentCards[0].CardHTML.innerHTML;
-        userField.appendChild(playerCardElement);
-        oponentCardValue = gerCardValue(oponentCardData.Value)
-
-        if(userCardValue1 > oponentCardValue) {
-            let winCard = oponentCards.shift();
-            let asLastCard = userCards.shift()
-            console.log("AAAA")
-
-            userCards.push(winCard);
-            userCards.push(asLastCard);
-        }
-        else if(userCardValue1 < oponentCardValue) {
-            let winCard = userCards.shift();
-            let asLastCard = oponentCards.shift()
-            console.log(winCard)
-
-            oponentCards.push(winCard);
-            oponentCards.push(asLastCard);
-        } else {
-            let passCardOne = userCards.shift();
-            let passCardTwo = oponentCards.shift()
-
-            userCards.push(passCardOne);
-            oponentCards.push(passCardTwo);
-        }
-
-        console.log(userCards)
-        console.log(oponentCards)
-
-        return [userCards, oponentCards]
-    }
-
-    function gerCardValue(cardValue) {
-        switch (cardValue) {
-            case "A":
-                cardValue = 11;
-                break;
-            case "J":
-                cardValue = 12;
-                break;
-            case "Q":
-                cardValue = 13;
-                break;
-            case "K":
-                cardValue = 14;
-                break;
-        }
-
-        return cardValue
+        return gameEnded;
     }
 }, false);
