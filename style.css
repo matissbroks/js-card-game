@@ -59,3 +59,7 @@ body {
 #userField {
     background-color: coral;
 }
+
+.hide {
+    display: none;
+}

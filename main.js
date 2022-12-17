@@ -16,7 +16,6 @@ document.addEventListener('DOMContentLoaded', function(){
     startGame()
 
 
-
     function startGame() {
         let freshDeck = shuffle(createDeck())
 
@@ -27,30 +26,47 @@ document.addEventListener('DOMContentLoaded', function(){
 
         let moveCount = 0;
 
-        hitButton.addEventListener('click', () => {
+        hitButton.addEventListener('click', ()=> {
             moveCount++;
             hitCards(userCards, oponentCards)
 
+            drawCards()
+
             if(checkLoseWin()) {
+                hitButton.remove();
+                drawCards(true)
                 return;
             }
 
             if(moveCount == 5) {
+                alert("Shuffling cards!")
+
+                hitButton.classList.add("hide");
+
+                setTimeout(() => {
+                    hitButton.classList.remove("hide");
+                }, 1000);
+                
                 shuffle(userCards)
                 shuffle(oponentCards)
                 moveCount = 0
             }
-
-            drawCards()
         })
     }
 
-    function drawCards() {
-        userCards.forEach((card, index) => {
+    function drawCards(clear = false) {
+        if(clear) {
+            userCardContainer.innerHTML = ''
+            oponentCardContainer.innerHTML = ''
+            document.getElementById('playField').innerHTML = ''
+            return
+        }
+
+        userCards.forEach(card => {
             userCardContainer.appendChild(card.CardHTML)
         })
 
-        oponentCards.forEach((card, index) => {
+        oponentCards.forEach(card => {
             oponentCardContainer.appendChild(card.CardHTML)
         })
     }
@@ -94,11 +110,14 @@ document.addEventListener('DOMContentLoaded', function(){
             oponentCards.push(winCard);
             oponentCards.push(asLastCard);
         } else {
+            // TODO: Fix this case
+            // For now switching cards
+
             let passCardOne = userCards.shift();
             let passCardTwo = oponentCards.shift()
 
-            userCards.push(passCardOne);
-            oponentCards.push(passCardTwo);
+            userCards.push(passCardTwo);
+            oponentCards.push(passCardOne);
         }
 
         return [userCards, oponentCards]
@@ -117,6 +136,9 @@ document.addEventListener('DOMContentLoaded', function(){
                 break;
             case "K":
                 cardValue = 14;
+                break;
+            default:
+                cardValue = parseInt(cardValue);
                 break;
         }
 
@@ -200,19 +222,19 @@ document.addEventListener('DOMContentLoaded', function(){
     }
 
     function checkLoseWin() {
+        let defaultMsgText = 'Refresh page to play again'
         let gameEnded = false;
         if(userCards.length == 0) {
-            msg = "You Loose!"
+            msg = "You Loose! " + defaultMsgText
             gameEnded = true;
         }
         else if(oponentCards.length == 0) {
-            msg = "You WIN!!!"
+            msg = "You WIN!!! " + defaultMsgText
             gameEnded = true;
         }
 
         if(gameEnded) {
             alert(msg)
-            hitButton.removeEventListener('click')
         }
         
         return gameEnded;
