@@ -8,10 +8,12 @@ document.addEventListener('DOMContentLoaded', function(){
     let oponentCardContainer = document.getElementById('oponentCardContainer')
 
     let suits = ["spades", "diamonds", "clubs", "hearts"];
-    let values = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"];
+    // let values = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"];
+    let values = ["A", "10", "J", "Q", "K"];
 
     let userCards = new Array();
     let oponentCards = new Array();
+    let drawCardsForTake = new Array();
 
     startGame()
 
@@ -72,8 +74,8 @@ document.addEventListener('DOMContentLoaded', function(){
     }
 
     function hitCards(userCards, oponentCards) {
-        let userCardData = userCards[0]
-        let oponentCardData = oponentCards[0]
+        let userCardData = userCards.shift();
+        let oponentCardData = oponentCards.shift();
         
         if(playerField.innerHTML != '') {
             playerField.innerHTML = ''
@@ -84,50 +86,47 @@ document.addEventListener('DOMContentLoaded', function(){
         }
 
 
-        let userCardElement = document.createElement("div");
-        userCardElement.classList.add("card");
-        userCardElement.innerHTML = userCards[0].CardHTML.innerHTML;
-        playerField.appendChild(userCardElement);
-        userCardValue1 = gerCardValue(userCardData.Value)
+        createCardElement(userCardData.CardHTML.innerHTML, playerField)
+        userCardValue1 = getCardValue(userCardData.Value)
 
-        let playerCardElement = document.createElement("div");
-        playerCardElement.classList.add("card");
-        playerCardElement.innerHTML = oponentCards[0].CardHTML.innerHTML;
-        userField.appendChild(playerCardElement);
-        oponentCardValue = gerCardValue(oponentCardData.Value)
+        createCardElement(oponentCardData.CardHTML.innerHTML, userField)
+        oponentCardValue = getCardValue(oponentCardData.Value)
 
         if(userCardValue1 > oponentCardValue) {
-            let winCard = oponentCards.shift();
-            let asLastCard = userCards.shift()
-
-            userCards.push(winCard);
-            userCards.push(asLastCard);
+            userCards.push(userCardData, oponentCardData);
+            if(drawCardsForTake !== []) {
+                drawCardsForTake.forEach(card => {
+                    userCards.push(card)
+                });
+                drawCardsForTake = []
+            }
         }
         else if(userCardValue1 < oponentCardValue) {
-            let winCard = userCards.shift();
-            let asLastCard = oponentCards.shift()
-
-            oponentCards.push(winCard);
-            oponentCards.push(asLastCard);
-        } else {
-            // TODO: Fix this case
-            // For now switching cards
-
-            let passCardOne = userCards.shift();
-            let passCardTwo = oponentCards.shift()
-
-            userCards.push(passCardTwo);
-            oponentCards.push(passCardOne);
+            oponentCards.push(oponentCardData, userCardData);
+            if(drawCardsForTake !== []) {
+                drawCardsForTake.forEach(card => {
+                    oponentCards.push(card)
+                });
+                drawCardsForTake = []
+            }
+        }
+        else {
+            drawCardsForTake.push(oponentCardData, userCardData);
         }
 
         return [userCards, oponentCards]
     }
 
-    function gerCardValue(cardValue) {
+
+    function createCardElement(displayValue, parent) {
+        let newCardElement = document.createElement("div");
+        newCardElement.classList.add("card");
+        newCardElement.innerHTML = displayValue;
+        parent.appendChild(newCardElement);
+    }
+
+    function getCardValue(cardValue) {
         switch (cardValue) {
-            case "A":
-                cardValue = 11;
-                break;
             case "J":
                 cardValue = 12;
                 break;
@@ -136,6 +135,9 @@ document.addEventListener('DOMContentLoaded', function(){
                 break;
             case "K":
                 cardValue = 14;
+                break;
+            case "A":
+                cardValue = 15;
                 break;
             default:
                 cardValue = parseInt(cardValue);

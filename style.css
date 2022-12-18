@@ -15,6 +15,18 @@ body {
     justify-content: space-around
 }
 
+.d-flex {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.symbol-item {
+    width: 50%;
+    font-size: 4em;
+    align-self: center;
+    text-align: center;
+}
+
 .card {
     background-color: #fff;
     width: 95px;
