@@ -1,4 +1,7 @@
-document.addEventListener('DOMContentLoaded', function(){
+document.addEventListener('DOMContentLoaded', function() {
+    let playerCardCountText = document.getElementById('player-card-count');
+    let oponentCardCountText = document.getElementById('oponent-card-count');
+
     let hitButton = document.getElementById('hitCards')
 
     let playerField = document.getElementById('playerField')
@@ -8,12 +11,14 @@ document.addEventListener('DOMContentLoaded', function(){
     let oponentCardContainer = document.getElementById('oponentCardContainer')
 
     let suits = ["spades", "diamonds", "clubs", "hearts"];
-    // let values = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"];
-    let values = ["A", "10", "J", "Q", "K"];
+    let values = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"];
 
     let userCards = new Array();
     let oponentCards = new Array();
     let drawCardsForTake = new Array();
+
+    let playerCardCount = 0;
+    let oponentCardCount = 0;
 
     startGame()
 
@@ -71,6 +76,9 @@ document.addEventListener('DOMContentLoaded', function(){
         oponentCards.forEach(card => {
             oponentCardContainer.appendChild(card.CardHTML)
         })
+
+        playerCardCountText.innerText = userCards.length;
+        oponentCardCountText.innerText = oponentCards.length;
     }
 
     function hitCards(userCards, oponentCards) {

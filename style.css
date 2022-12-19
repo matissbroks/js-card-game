@@ -20,6 +20,14 @@ body {
     flex-wrap: wrap;
 }
 
+.flex-column {
+    flex-direction: column;
+}
+
+.align-center {
+    align-items: center;
+}
+
 .symbol-item {
     width: 50%;
     font-size: 4em;
@@ -74,4 +82,24 @@ body {
 
 .hide {
     display: none;
+}
+
+.card-count {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin: 0;
+}
+
+.play-table {
+    background-color: cornflowerblue;
+    border-radius: 2em;
+    border: 5px solid black;
+    margin-bottom: 2rem;
+}
+
+/* If screen size smaler than 700px than this kicks in */
+@media (max-width: 700px) {
+    .play-table {
+        background-color: yellow;
+    }
 }
