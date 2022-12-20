@@ -90,6 +90,10 @@ body {
     margin: 0;
 }
 
+.bold {
+    font-weight: bold;
+}
+
 .play-table {
     background-color: cornflowerblue;
     border-radius: 2em;
@@ -100,6 +104,6 @@ body {
 /* If screen size smaler than 700px than this kicks in */
 @media (max-width: 700px) {
     .play-table {
-        background-color: yellow;
+        flex-direction: column;
     }
 }
