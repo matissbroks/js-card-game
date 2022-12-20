@@ -54,7 +54,7 @@ body {
     transform: translate(-50%, -50%);
 }
 
-.red {
+.clr-red {
     color: red;
 }
 
@@ -65,19 +65,6 @@ body {
     left: 50%;
 
     transform: translate(-50%, -50%);
-}
-
-.bg-lightblue {
-    background-color: aquamarine;
-}
-
-.bg-gray {
-    background-color: burlywood;
-}
-
-#playerField,
-#userField {
-    background-color: coral;
 }
 
 .hide {
@@ -99,6 +86,15 @@ body {
     border-radius: 2em;
     border: 5px solid black;
     margin-bottom: 2rem;
+}
+
+.hit-button {
+    margin-top: .5em;
+    border: 2px solid black;
+    border-radius: 100px;
+    text-transform: uppercase; 
+    padding: .5em 1.5em;
+    font-weight: 900;
 }
 
 /* If screen size smaler than 700px than this kicks in */

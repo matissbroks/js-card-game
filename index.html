@@ -18,13 +18,12 @@
         </div>
 
         <div class="container play-table">
-            <!-- Default empty card -->
             <div class="d-flex flex-column align-center">
                 <div class="card d-flex">
                     <span class="symbol-item">&#9824;</span>
-                    <span class="symbol-item">&#9830;</span>
+                    <span class="symbol-item clr-red">&#9830;</span>
+                    <span class="symbol-item clr-red">&#9829;</span>
                     <span class="symbol-item">&#9827;</span>
-                    <span class="symbol-item">&#9829;</span>
                 </div>
 
                 <p class="bold">YOU: <span class="card-count" id="player-card-count"></span></p>
@@ -33,47 +32,27 @@
 
             <div class="d-flex flex-column align-center">
                 <div class="d-flex align-center">
-                    <div class="card d-flex">
-                        <span class="symbol-item">&#9824;</span>
-                        <span class="symbol-item">&#9830;</span>
-                        <span class="symbol-item">&#9827;</span>
-                        <span class="symbol-item">&#9829;</span>
-                    </div>
-    
-                    <div class="card d-flex">
-                        <span class="symbol-item">&#9824;</span>
-                        <span class="symbol-item">&#9830;</span>
-                        <span class="symbol-item">&#9827;</span>
-                        <span class="symbol-item">&#9829;</span>
-                    </div>
+                    <div id="playerField"></div>
+
+                    <div id="info-field" class="hide"></div>
+
+                    <div id="userField"></div>
                 </div>
 
-                <button>Hit me</button>
+                <button id="hitCards" class="hit-button">Hit</button>
             </div>
 
             <div class="d-flex flex-column align-center">
                 <div class="card d-flex">
                     <span class="symbol-item">&#9824;</span>
-                    <span class="symbol-item">&#9830;</span>
+                    <span class="symbol-item clr-red">&#9830;</span>
+                    <span class="symbol-item clr-red">&#9829;</span>
                     <span class="symbol-item">&#9827;</span>
-                    <span class="symbol-item">&#9829;</span>
                 </div>
 
                 <p class="bold">OPONENT: <span class="card-count" id="oponent-card-count"></span></p>
             </div>
         </div>
-
-        <div class="container bg-lightblue" id="userCardContainer"></div>
-
-        <div class="container" id="playField">
-            <div id="playerField"></div>
-
-            <button id="hitCards">Hit me</button>
-
-            <div id="userField"></div>
-        </div>
-
-        <div class="container bg-gray" id="oponentCardContainer"></div>
     </div>
 </body>
 </html>
