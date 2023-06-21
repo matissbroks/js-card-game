@@ -10,6 +10,14 @@ Little funny card game created on Javascript
     - If not than just open `index.html` from you file system
 3. And you are done
 
+### Project setup with Docker
+
+1. make sure you can run docker containers
+2. Clone this repo
+3. Build image: `docker build -t web-js-card-game .`
+4. Run image in container: `docker run -d -p 80:80 --name js-card-game web-js-card-game`
+5. Go to `http://localhost/` and you are done. 
+
 ***
 
 ### Game rules
